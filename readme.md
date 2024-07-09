@@ -7,8 +7,8 @@
 1. **Clone the Repository**
 
    ```bash
-   git clone <your_repository_url>
-   cd <your_repository_directory>
+   git clone https://github.com/Aadilkhan2001/todo_graphql_backend.git
+   cd todo_graphql_backend
    ```
 
 2. **Create a `.env` File**
