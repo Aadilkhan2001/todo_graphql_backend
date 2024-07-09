@@ -1,0 +1,39 @@
+version: '3'
+
+services:
+  keycloak:
+    image: quay.io/keycloak/keycloak
+    command: start-dev
+    environment:
+      KEYCLOAK_ADMIN: ${KEYCLOAK_USER}
+      KEYCLOAK_ADMIN_PASSWORD: ${KEYCLOAK_PASSWORD}
+    ports:
+      - "8080:8080"
+    restart: always
+    networks:
+      - app_network
+
+  todo-app:
+    build: 
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "5000:5000"
+    depends_on:
+      - keycloak
+    expose:
+      - 5000
+    environment:
+      KEYCLOAK_URL: ${KEYCLOAK_SERVER_URL}
+      KEYCLOAK_REALM: ${KEYCLOAK_REALM}
+      KEYCLOAK_CLIENT_ID: ${KEYCLOAK_CLIENT_ID}
+      KEYCLOAK_CLIENT_SECRET: ${KEYCLOAK_SECRET}
+    restart: always
+    volumes:
+      - .:/app
+    networks:
+      - app_network
+
+networks:
+  app_network:
+    driver: bridge
